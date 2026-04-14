@@ -23,7 +23,7 @@
 
 ## 📸 Screen Shots
 <img width="1708" height="656" alt="image" src="https://github.com/user-attachments/assets/ed146191-dcea-42c9-b9ff-3570668a8174" />
-<img width="1718" height="684" alt="image" src="https://github.com/user-attachments/assets/f423fab1-957d-46b7-bc85-35601d5a324c" />
+<img width="1715" height="688" alt="image" src="https://github.com/user-attachments/assets/ee4aaf93-6d76-4625-8e2a-23173cfec3e9" />
 
 
 ## 💻 How to Setup
