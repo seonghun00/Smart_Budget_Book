@@ -64,7 +64,7 @@ function monthlyBackupAndClear() {
   var currentMonth = today.getMonth() + 1; // 현재 월 (1~12)
   
   // 1. 달별 합계 행(33행)의 데이터 복사 (B33:H33)
-  // 성훈님 시트 기준으로 B33부터 H33까지가 합계 영역입니다.
+  // 내 시트 기준으로 B33부터 H33까지가 합계 영역.
   var monthlySummary = sheet.getRange(33, 2, 1, 7).getValues()[0];
   
   // 2. 아래쪽 월별 기록장(35~46행) 중 해당 월 행 찾기
