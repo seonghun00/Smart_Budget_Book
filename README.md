@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=50&section=header" width="100%" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=70&section=header" width="100%" />
 </p>
 
 # 📱 Automated Expense Logging System
