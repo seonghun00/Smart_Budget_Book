@@ -5,6 +5,9 @@
 # 📱 Automated Expense Logging System
 > **iPhone Short cuts + Google Apps Script (GAS)**
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Google Apps Script](https://img.shields.io/badge/Google%20Apps%20Script-4285F4?style=flat&logo=google-apps-script&logoColor=white)](https://developers.google.com/apps-script)
+
 아이폰 단축어를 활용하여 단 몇 초 만에 소비 내역을 구글 스프레드시트에 업데이트하고, 실시간 대시보드로 시각화하는 자동화 시스템입니다.
 
 ## 🚀 Key Features
