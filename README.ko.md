@@ -8,6 +8,7 @@
 > **아이폰 단축어 + Google Apps Script (GAS)**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black"></a>
 [![Google Apps Script](https://img.shields.io/badge/Google%20Apps%20Script-4285F4?style=flat&logo=google-apps-script&logoColor=white)](https://developers.google.com/apps-script)
 <a href="https://www.google.com/sheets/about/"><img src="https://img.shields.io/badge/Google_Sheets-34A853?style=flat&logo=google-sheets&logoColor=white"></a>
 [![iOS Shortcuts](https://img.shields.io/badge/iOS%20Shortcuts-FF4500?style=flat&logo=shortcuts&logoColor=white)](https://support.apple.com/guide/shortcuts/welcome/ios)
