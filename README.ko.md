@@ -4,8 +4,8 @@
 
 ##### [English](README.md) | **한국어**
 
-# 📱 Automated Expense Logging System
-> **iPhone Short cuts + Google Apps Script (GAS)**
+# 📱 자동 가계부 기록 in 구글 시트
+> **아이폰 단축어 + Google Apps Script (GAS)**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Google Apps Script](https://img.shields.io/badge/Google%20Apps%20Script-4285F4?style=flat&logo=google-apps-script&logoColor=white)](https://developers.google.com/apps-script)
