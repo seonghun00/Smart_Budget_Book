@@ -19,7 +19,8 @@ An automated financial logging system that updates spending data to Google Sheet
 - **One-Tap Logging**: Instantly input expenses via iOS Shortcuts without opening any apps.
 - **Smart Parsing**: Automatically separates category and amount from natural language input (e.g., `Cafe 5000`).
 - **Dynamic Dashboard**: Visualizes spending patterns with real-time Google Sheets charts.
-- **Monthly Auto-Backup**: Features a serverless trigger that automatically archives monthly summaries and resets daily logs on the last day of each month.
+- **Fully Automatic Rollover**: The system automatically detects a month change upon the first shortcut entry of a new month, archiving the previous month's data and resetting the board seamlessly. No time-driven triggers required.
+- **Custom Settings & Menu**: Easily configure the target Spreadsheet ID and Sheet Name for robust stability, and use the built-in custom menu within Google Sheets for manual backups.
 - **Error Handling**: Supports correction via negative inputs (e.g., `-5000`) and handles data format exceptions.
 
 ## 🛠 Tech Stack
@@ -31,7 +32,7 @@ An automated financial logging system that updates spending data to Google Sheet
 1. **Input**: User enters "Item Amount" using an iPhone Shortcut.
 2. **Transfer**: The Shortcut sends a `GET` request to the Google Web App URL.
 3. **Processing**: GAS receives the data, parses it, and records it in the row corresponding to today's date.
-4. **Maintenance**: On the last day of the month, a trigger moves the monthly total to the database and initializes the sheet.
+4. **Maintenance (Auto Rollover)**: When logging the first expense of a new month, GAS detects the month change, archives the previous month's totals, clears the daily log (including memos), and then records the new entry. A custom menu is also provided for manual maintenance.
 
 ## 📸 Screenshots
 <img width="1710" height="681" alt="image" src="https://github.com/user-attachments/assets/50d2b0a1-e077-4c6e-bf44-7a932a3eb1df" />
@@ -43,6 +44,16 @@ An automated financial logging system that updates spending data to Google Sheet
 2. **Apps Script**: Copy the code from `src/code.gs` into your Google Sheets Apps Script editor and deploy as a Web App.
 3. **iOS Shortcut**: Create a shortcut on your iPhone and connect it to your Web App URL.
 4. **Action Button**: Assign the shortcut to the Action Button in iPhone settings (Available for iPhone 15 Pro and later).
+
+## ⚙️ Customization (Recommended)
+To prevent permission errors and ensure stability when running via iOS Shortcuts, configure your specific Spreadsheet ID and Sheet Name at the very top of `src/code.gs` (Lines 8 and 12):
+
+```javascript
+var SPREADSHEET_ID = "YOUR_SPREADSHEET_ID_HERE"; 
+var SHEET_NAME = "YOUR_SHEET_NAME_HERE"; 
+```
+- **SPREADSHEET_ID**: The long string of letters and numbers in your Google Sheets URL between `/d/` and `/edit`.
+- **SHEET_NAME**: The exact name of the tab where you log your daily expenses (if left blank, the first sheet is used).
 
 <br>
 

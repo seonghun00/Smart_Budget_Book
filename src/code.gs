@@ -1,11 +1,47 @@
-// Version.13 - 공백 무시 & 셀에 직접 '메모(노트)' 삽입 및 누적 기능
+// Version.14 - 공백 무시, 메모 누적, 완전 자동화 & 사용자 설정 추가
+
+// ==========================================
+// [설정] 본인의 환경에 맞게 아래 값을 채워넣으시면 훨씬 안전합니다.
+// ==========================================
+// 1. 스프레드시트 주소(URL)에서 /d/ 와 /edit 사이의 긴 영문숫자 조합을 복사해 넣으세요.
+// (비워두면 현재 연결된 스프레드시트를 자동으로 찾습니다)
+var SPREADSHEET_ID = ""; 
+
+// 2. 가계부를 기록하는 시트의 탭 이름을 적어주세요. (예: "Daily_Expense_Log")
+// (비워두면 가장 첫 번째 시트에 기록합니다)
+var SHEET_NAME = ""; 
+// ==========================================
 
 //  [ Google Spread Sheet → 확장 프로그램 → Apps Script ]  //
 
+// 스프레드시트를 열 때 상단에 커스텀 메뉴를 추가합니다.
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+  ui.createMenu('💾 가계부 관리')
+      .addItem('수동으로 백업 및 초기화 실행', 'monthlyBackupAndClear')
+      .addToUi();
+}
+
+// 공통 시트 불러오기 함수
+function getTargetSheet() {
+  var ss;
+  if (SPREADSHEET_ID) {
+    ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  } else {
+    ss = SpreadsheetApp.getActiveSpreadsheet();
+  }
+  
+  if (SHEET_NAME) {
+    return ss.getSheetByName(SHEET_NAME);
+  } else {
+    return ss.getSheets()[0];
+  }
+}
+
 function doGet(e) {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheets()[0];
+    var sheet = getTargetSheet();
+    if (!sheet) return ContentService.createTextOutput("시트를 찾을 수 없습니다.");
     
     var rawData = e.parameter.data || "";
     if (!rawData) return ContentService.createTextOutput("데이터가 없습니다.");
@@ -21,6 +57,32 @@ function doGet(e) {
     // 2. 날짜 및 위치 찾기
     var today = new Date();
     var yearMonth = Utilities.formatDate(today, "GMT+9", "yy.MM"); 
+
+    // ==========================================
+    // [자동 달 넘김 로직] - A1과 비교해서 다르면 초기화
+    // ==========================================
+    var a1Value = sheet.getRange("A1").getValue().toString();
+    if (a1Value && a1Value !== yearMonth && a1Value.indexOf(".") !== -1) {
+      var recordedMonth = parseInt(a1Value.split(".")[1], 10);
+      var currentMonth = parseInt(yearMonth.split(".")[1], 10);
+      
+      if (recordedMonth !== currentMonth && !isNaN(recordedMonth)) {
+        var numCols = 11; // B~L열 총 11개
+        // 1. B33:L33 합계 복사
+        var monthlySummary = sheet.getRange(33, 2, 1, numCols).getValues()[0];
+        
+        // 2. 월별 기록 위치 (1월=36행 -> 35 + 월)
+        var targetRow = 35 + recordedMonth;
+        sheet.getRange(targetRow, 2, 1, numCols).setValues([monthlySummary]);
+        
+        // 3. B2:L32 기록 지우기
+        var dataRange = sheet.getRange(2, 2, 31, numCols);
+        dataRange.clearContent();
+        dataRange.clearNote();
+      }
+    }
+    
+    // A1을 현재 월로 업데이트
     sheet.getRange("A1").setValue(yearMonth);
 
     var rowIndex = today.getDate() + 1; 
@@ -56,32 +118,51 @@ function doGet(e) {
   }
 }
 
-
-
-  // 매달 마지막 날 실행될 자동화 함수
-
+// 수동 실행을 위한 함수 (메뉴에서 클릭 시 작동)
 function monthlyBackupAndClear() {
-
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheets()[0];
+  var sheet = getTargetSheet();
+  if (!sheet) {
+    SpreadsheetApp.getUi().alert("시트를 찾을 수 없습니다.");
+    return;
+  }
+  
+  // 1. A1 값 가져오기
+  var a1Value = sheet.getRange("A1").getValue().toString(); // 예: "26.04"
+  if (!a1Value || a1Value.indexOf(".") === -1) {
+    SpreadsheetApp.getUi().alert("A1 셀의 형식이 올바르지 않습니다.");
+    return;
+  }
+  
+  var recordedMonth = parseInt(a1Value.split(".")[1], 10); // A1에 기록된 월 (예: 4)
   var today = new Date();
-  var currentMonth = today.getMonth() + 1; // 현재 월 (1~12)
-
-  // 1. 달별 합계 행(33행)의 데이터 복사 (B33:H33)
-  // 시트 기준으로 B33부터 H33까지가 합계 영역입니다.
-  var monthlySummary = sheet.getRange(33, 2, 1, 7).getValues()[0];
-
-  // 2. 아래쪽 월별 기록장(35~46행) 중 해당 월 행 찾기
-  // 35행이 1월, 36행이 2월... 이므로 '34 + 월' 행이 됩니다.
-  var targetRow = 34 + currentMonth;
-
-  // 3. 해당 월 행에 데이터 붙여넣기 (B열부터 H열까지)
-  sheet.getRange(targetRow, 2, 1, 7).setValues([monthlySummary]);
-
-  // 4. 상단 일별 기록 데이터 초기화 (B2:H32 영역)
-  // 다음 달을 위해 깔끔하게 비워줍니다.
-  sheet.getRange(2, 2, 31, 7).clearContent();
-
-  console.log(currentMonth + "월 데이터 백업 및 초기화 완료");
-
+  var currentMonth = today.getMonth() + 1; // 실제 현재 월 (예: 5)
+  
+  // 2. 1달 차이가 나면 (A1 월과 현재 월이 다르면)
+  if (recordedMonth !== currentMonth) {
+    
+    // B~L열 총 11개
+    var numCols = 11;
+    
+    // B33:L33 합계 복사
+    var monthlySummary = sheet.getRange(33, 2, 1, numCols).getValues()[0];
+    
+    // 1월=36행이므로, 목표 행은 '35 + 월'
+    var targetRow = 35 + recordedMonth;
+    
+    // 목표 행(B~L)에 데이터 붙여넣기
+    sheet.getRange(targetRow, 2, 1, numCols).setValues([monthlySummary]);
+    
+    // B2:L32 기록 및 메모 지우기
+    var dataRange = sheet.getRange(2, 2, 31, numCols);
+    dataRange.clearContent();
+    dataRange.clearNote();
+    
+    // A1을 현재 월로 업데이트
+    var yearMonth = Utilities.formatDate(today, "GMT+9", "yy.MM"); 
+    sheet.getRange("A1").setValue(yearMonth);
+    
+    SpreadsheetApp.getUi().alert('✅ 백업 완료', recordedMonth + '월 합계가 ' + targetRow + '행에 저장되고 시트가 초기화되었습니다.', SpreadsheetApp.getUi().ButtonSet.OK);
+  } else {
+    SpreadsheetApp.getUi().alert('ℹ️ 안내', 'A1 셀이 이미 현재 월(' + currentMonth + '월)과 같아서 아무런 작업을 하지 않았습니다.', SpreadsheetApp.getUi().ButtonSet.OK);
+  }
 }
