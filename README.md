@@ -40,7 +40,7 @@ An automated financial logging system that updates spending data to Google Sheet
 <img width="1713" height="681" alt="image" src="https://github.com/user-attachments/assets/c053db7a-3ae0-49f1-81d6-fe513b103f60" />
 
 ## 💻 How to Setup
-1. **Google Sheets**: Download the [Automated-Ledger.xlsx](./assets/Automated-Ledger.xlsx) template file and drag & drop it into your Google Drive to instantly apply the exact same layout and formulas.
+1. **Google Sheets**: Click [here](https://docs.google.com/spreadsheets/d/1PpaZZrqflhKwPuHxhzsA2wsUaHKkg0Wnxeyo-vCEjmg/copy) to instantly make a perfect copy of the template directly to your Google Drive.
 2. **Apps Script**: Copy the code from `src/code.gs` into your Google Sheets Apps Script editor and deploy as a Web App.
 3. **iOS Shortcut**: Create a shortcut on your iPhone and connect it to your Web App URL.
 4. **Action Button**: Assign the shortcut to the Action Button in iPhone settings (Available for iPhone 15 Pro and later).

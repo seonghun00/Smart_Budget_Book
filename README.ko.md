@@ -41,7 +41,7 @@
 
 
 ## 💻 How to Setup
-1. **Google Sheets**: 제공된 [Automated-Ledger.xlsx](./assets/Automated-Ledger.xlsx) 엑셀 템플릿 파일을 다운로드하여 구글 드라이브에 끌어다 놓으세요. 원본과 동일한 색상, 표 양식, 함수가 100% 완벽하게 복원됩니다.
+1. **Google Sheets**: [여기](https://docs.google.com/spreadsheets/d/1PpaZZrqflhKwPuHxhzsA2wsUaHKkg0Wnxeyo-vCEjmg/copy)를 클릭하여 100% 완벽하게 보존된 가계부 템플릿 사본을 본인의 구글 드라이브에 즉시 복사합니다.
 2. **Apps Script**: `src/code.gs`의 코드를 복사하여 구글 시트 내 앱스 스크립트에 배포합니다.
 3. **iOS Shortcut**: 아이폰 단축어를 생성하고 웹 앱 URL을 연결합니다.
 4. **Action Button**: 아이폰 설정에서 해당 단축어를 액션 버튼으로 지정합니다. (아이폰 15 이상 가능)
